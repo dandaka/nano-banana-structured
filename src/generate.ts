@@ -29,8 +29,7 @@ export async function generateImage(
     responseModalities: ["image", "text"],
   };
   if (prompt.meta?.aspect_ratio) {
-    // Gemini expects "1:1" format as aspectRatio
-    config.aspectRatio = prompt.meta.aspect_ratio;
+    config.imageConfig = { aspectRatio: prompt.meta.aspect_ratio };
   }
 
   const response = await ai.models.generateContent({
