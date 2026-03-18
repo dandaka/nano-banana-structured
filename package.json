@@ -1,6 +1,7 @@
 {
   "name": "nano-banana-structured",
   "version": "0.1.0",
+  "license": "AGPL-3.0-only",
   "type": "module",
   "scripts": {
     "analyze": "bun run src/cli.ts analyze",
