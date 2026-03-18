@@ -2,6 +2,10 @@
 // This is the canonical JSON shape for both analyze (output) and generate (input).
 
 export interface ImagePrompt {
+  meta?: {
+    aspect_ratio?: "1:1" | "16:9" | "9:16" | "4:3" | "3:4" | "3:2" | "2:3";
+    negative_prompt?: string[];
+  };
   core: {
     subject: string;
     scene?: string;

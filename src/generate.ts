@@ -16,16 +16,27 @@ export async function generateImage(
       ? JSON.parse(readFileSync(input, "utf-8"))
       : input;
 
-  const promptText = promptToText(prompt);
+  let promptText = promptToText(prompt);
+
+  // Append negative prompt if present
+  if (prompt.meta?.negative_prompt?.length) {
+    promptText += `\n\nNEGATIVE PROMPT — do NOT include any of the following: ${prompt.meta.negative_prompt.join(", ")}.`;
+  }
 
   const ai = new GoogleGenAI({ apiKey });
+
+  const config: Record<string, unknown> = {
+    responseModalities: ["image", "text"],
+  };
+  if (prompt.meta?.aspect_ratio) {
+    // Gemini expects "1:1" format as aspectRatio
+    config.aspectRatio = prompt.meta.aspect_ratio;
+  }
 
   const response = await ai.models.generateContent({
     model: "gemini-3.1-flash-image-preview",
     contents: promptText,
-    config: {
-      responseModalities: ["image", "text"],
-    },
+    config,
   });
 
   const parts = response.candidates?.[0]?.content?.parts;
